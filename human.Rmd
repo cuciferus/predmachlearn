@@ -81,10 +81,14 @@ plot(modelImp, top=10)
 ```{r}
 pred <- predict(modelFit, newdata=test)
 print(confusionMatrix(pred, test$classe))
-library(rattle)
-toPrint<- getTree(modelFit$finalModel, k=2)
-fancyRpartPlot(toPrint)
 ```
 ### The Expected out of sample error
-##The end
+```{r}
+dim(testing)
+dim(training)
+predictedTest <- predict(modelFit, newdata=testing)
+predictedTest
+```
+## Results
+I've just successfully aplied a ML tehnique to a data set with a high accuracy
 

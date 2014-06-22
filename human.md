@@ -62,6 +62,10 @@ library(caret)
 ## Loading required package: methods
 ```
 
+```
+## Warning: couldn't connect to display "specialistu:10.0"
+```
+
 ```r
 inTrain = createDataPartition(y = training$classe, p = 0.7, list = F)
 train = training[inTrain, ]
@@ -219,31 +223,34 @@ print(confusionMatrix(pred, test$classe))
 ## Balanced Accuracy       1.000    0.999    0.999    0.998    1.000
 ```
 
-```r
-library(rattle)
-```
-
-```
-## Rattle: A free graphical interface for data mining with R.
-## Version 3.0.2 r169 Copyright (c) 2006-2013 Togaware Pty Ltd.
-## Type 'rattle()' to shake, rattle, and roll your data.
-```
-
-```r
-toPrint <- getTree(modelFit$finalModel, k = 2)
-fancyRpartPlot(toPrint)
-```
-
-```
-## Loading required package: rpart.plot
-## Loading required package: rpart
-## Loading required package: RColorBrewer
-```
-
-```
-## Error: $ operator is invalid for atomic vectors
-```
-
 ### The Expected out of sample error
-##The end
+
+```r
+dim(testing)
+```
+
+```
+## [1] 20 56
+```
+
+```r
+dim(training)
+```
+
+```
+## [1] 19622    56
+```
+
+```r
+predictedTest <- predict(modelFit, newdata = testing)
+predictedTest
+```
+
+```
+##  [1] B A B A A E D B A A B C B A E E A B B B
+## Levels: A B C D E
+```
+
+## Results
+I've just successfully aplied a ML tehnique to a data set with a high accuracy
 

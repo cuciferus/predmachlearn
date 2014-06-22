@@ -247,6 +247,9 @@ testing &lt;- testing[, -nzv]
 ## Loading required package: methods
 </code></pre>
 
+<pre><code>## Warning: couldn&#39;t connect to display &quot;specialistu:10.0&quot;
+</code></pre>
+
 <pre><code class="r">inTrain = createDataPartition(y = training$classe, p = 0.7, list = F)
 train = training[inTrain, ]
 test = training[-inTrain, ]
@@ -389,29 +392,31 @@ print(confusionMatrix(pred, test$classe))
 ## Balanced Accuracy       1.000    0.999    0.999    0.998    1.000
 </code></pre>
 
-<pre><code class="r">library(rattle)
-</code></pre>
-
-<pre><code>## Rattle: A free graphical interface for data mining with R.
-## Version 3.0.2 r169 Copyright (c) 2006-2013 Togaware Pty Ltd.
-## Type &#39;rattle()&#39; to shake, rattle, and roll your data.
-</code></pre>
-
-<pre><code class="r">toPrint &lt;- getTree(modelFit$finalModel, k = 2)
-fancyRpartPlot(toPrint)
-</code></pre>
-
-<pre><code>## Loading required package: rpart.plot
-## Loading required package: rpart
-## Loading required package: RColorBrewer
-</code></pre>
-
-<pre><code>## Error: $ operator is invalid for atomic vectors
-</code></pre>
-
 <h3>The Expected out of sample error</h3>
 
-<p>##The end</p>
+<pre><code class="r">dim(testing)
+</code></pre>
+
+<pre><code>## [1] 20 56
+</code></pre>
+
+<pre><code class="r">dim(training)
+</code></pre>
+
+<pre><code>## [1] 19622    56
+</code></pre>
+
+<pre><code class="r">predictedTest &lt;- predict(modelFit, newdata = testing)
+predictedTest
+</code></pre>
+
+<pre><code>##  [1] B A B A A E D B A A B C B A E E A B B B
+## Levels: A B C D E
+</code></pre>
+
+<h2>Results</h2>
+
+<p>I&#39;ve just successfully aplied a ML tehnique to a data set with a high accuracy</p>
 
 </body>
 
