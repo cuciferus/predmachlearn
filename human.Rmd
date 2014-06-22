@@ -1,0 +1,94 @@
+Practical Machine Learning -- Human Grading exercice
+===
+Assignment: 
+Details on coursera webpage
+
+Step 1
+---
+Data loading
+```{r}
+testing<-read.csv('pml-testing.csv')
+training<- read.csv('pml-training.csv')
+```
+
+## Step 2
+--
+Data cleaning(clensing)
+---
+first we remove the columns that cannot be used as predictors
+timestamps, admin stuff
+```{r} 
+col2remove<- grep("X|user_name|cvtd_timestamp", names(training))
+training <- training[,-col2remove]
+testing <- testing[,-col2remove]
+```
+
+then we remove the empty columns, 
+```{r, warning=F, comment=NA}
+emptycol <- apply(training, 2, function(x) {sum(is.na(x))})
+training <- training[,which(emptycol ==0)]
+testing <- testing[,which(emptycol ==0)]
+```
+
+summary data analisys reveals some columns that have nearZero variance
+chop chop we go
+```{r cache=TRUE}
+library(caret)
+nzv <- nearZeroVar(training)
+training <- training[,-nzv]
+testing <- testing [,-nzv]
+```
+
+### Partition the remaining data
+Final data preproces step is to divide the data into a training(70% of values) and a test(validation) set
+```{r}
+library(caret)
+inTrain = createDataPartition(y=training$classe, p=0.7, list=F)
+train = training[inTrain,]
+test = training[-inTrain,]
+```
+
+Step 3
+===
+#### Model Fit
+Due to the least amount of assumption made, the random forest seems a good aproach
+I'll do it in parallel and  cache the result since fitting a forest does take some time
+
+```{r cache=TRUE}
+set.seed(9)
+library(doMC)
+registerDoMC(cores=5)
+modelFit<- train(classe~., data=train, method="rf",ntree=317, importance =T)
+```
+#### Admire Results
+This yelded a nice accuracy
+```{r}
+modelFit
+results <- modelFit$results
+round(max(results$Accuracy),4)*100
+
+
+```
+
+It's interesting to know which predictors were the most important
+```{r}
+library(randomForest)
+modelImp<-varImp(modelFit)
+modelImp
+plot(modelImp, top=10)
+#varImpPlot(modelFit, n.var=5, type=1, main="Top 5 most important Vars")
+
+#### Make prediction on the test set
+```{r}
+pred <- predict(modelFit, newdata=test)
+print(confusionMatrix(pred, test$classe))
+library(rattle)
+toPrint<- getTree(modelFit$finalModel, k=2)
+fancyRpartPlot(toPrint)
+```
+### The Expected out of sample error
+```{r}
+cf<-confusionMatrix(pred, testing$classe)
+cf``
+##The end
+
