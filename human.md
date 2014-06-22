@@ -178,11 +178,7 @@ plot(modelImp, top = 10)
 
 ![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8.png) 
 
-```r
-# varImpPlot(modelFit, n.var=5, type=1, main='Top 5 most important Vars')
-
 #### Make prediction on the test set
-```
 
 ```r
 pred <- predict(modelFit, newdata = test)

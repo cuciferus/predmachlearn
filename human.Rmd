@@ -76,8 +76,7 @@ library(randomForest)
 modelImp<-varImp(modelFit)
 modelImp
 plot(modelImp, top=10)
-#varImpPlot(modelFit, n.var=5, type=1, main="Top 5 most important Vars")
-
+```
 #### Make prediction on the test set
 ```{r}
 pred <- predict(modelFit, newdata=test)
@@ -87,8 +86,5 @@ toPrint<- getTree(modelFit$finalModel, k=2)
 fancyRpartPlot(toPrint)
 ```
 ### The Expected out of sample error
-```{r}
-cf<-confusionMatrix(pred, testing$classe)
-cf``
 ##The end
 
